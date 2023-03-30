@@ -1,0 +1,36 @@
+﻿@using Ecommerce.ViewModels.SupplierViewModels
+@model List<IndexSupplierVM>
+
+<h1>Suppliers</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+@{
+    ViewData["Title"] = "Index";
+}
+
+@if(!Model.Any())
+{
+    <div class="alert alert-warning" role="alert">
+        There is no department to show
+    </div>
+}
+
+@foreach (var Supplier in Model)
+{
+    <div class="card" style="width: 18rem;">
+        @*<img src="@Supplier.Name" class="card-img-top" alt="...">*@
+        <div class="card-body">
+            <h5 class="card-title">@Supplier.Name</h5>
+            <p class="card-text">@Supplier.Zip - @Supplier.Street - @Supplier.City</p>
+            @foreach (var Phone in Supplier.SupplierPhones)
+            {
+                <p class="card-text">@Phone.PhoneNumber</p>
+            }
+            <a asp-action="Details" class="w-100 btn btn-primary">Details</a>
+            <a asp-action="Edit" asp-route-id="@Supplier.Id" class="btn btn-warning">Edit</a>
+            <a asp-action="Delete" class="btn btn-danger" asp-route-id="@Supplier.Id" >Delete</a>
+        </div>  
+    </div>
+}

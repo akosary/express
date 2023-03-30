@@ -1,0 +1,129 @@
+﻿@using System.Security.Claims
+@using Ecommerce.Constants
+@model Ecommerce.ViewModels.ProductViewModel.DetailsProductVM
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>DetailsProductVM</h4>
+    <hr />
+    <form id="favForm" method="post">
+        <button onclick="post()">
+            @if (Model.UserProduct.Count < 1 && false)
+            {
+                <input type="hidden" asp-for="Id" />
+                <svg id="love" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+                    <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z" />
+                </svg>
+            }
+            else 
+            {
+                var claimsIdentity = (ClaimsIdentity?)User.Identity;
+                bool flag = true;
+                foreach (var user in Model.UserProduct)
+                {
+                    if (user.ProductId == Model.Id 
+                        && user.UserId == claimsIdentity?.FindFirst(ClaimTypes.NameIdentifier)?.Value
+                        && flag == true)
+                    {
+                        <input type="hidden" asp-for="Id" />
+                        <svg id="love" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z" />
+                        </svg>
+                        flag = false;
+                    }
+                }
+                if(flag == true)
+                {
+                    <input type="hidden" asp-for="Id" />
+                    <svg id="love" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+                        <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z" />
+                    </svg>
+                }
+            }
+        </button>
+    </form>
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Stock)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Stock)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CoverImgPath)
+        </dt>
+        <dd class = "col-sm-10">
+            <img src="/@Model.CoverImgPath" alt="Main Picture" width="200" height="250"/>
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UnitPrice)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UnitPrice)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ProductSuppliers)
+        </dt>
+        <dd class = "col-sm-10">
+            @for (int i = 0; i < Model.ProductSuppliers.Count; i++)
+            {
+                <span>@Model.ProductSuppliers[i].Supplier.Name</span>
+            }
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ProductImages)
+        </dt>
+        <dd class = "col-sm-10">
+            @for (int i = 0; i < Model.ProductImages.Count; i++)
+            {
+               <img src="/@Model.ProductImages[i].ImgPath" alt="Picture @i" width="120" height="150" />
+            }
+        </dd>
+    </dl>
+</div>
+<div>
+    @if (AuthorizationService.AuthorizeAsync(User, Permissions.Products.Edit).Result.Succeeded)
+    {
+        <a class="btn btn-light" asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> <span>|</span>
+    }
+    <a class="btn btn-primary" asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts{
+    <script type="text/javascript">
+
+        var post = function () {
+            var data = $("#favForm").serialize();
+            $.ajax({
+                type: "POST",
+                url: "/Products/AddRemoveFavourite",
+                data: data,// $('#studentInfoId').serialize(),
+                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                success: function (response) {
+                    alert("Hello")
+                },
+                error: function () {
+                    alert('Failed to receive the Data');
+                    console.log('Failed ');
+                }
+            });
+        };
+    </script>
+}

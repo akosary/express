@@ -1,0 +1,26 @@
+﻿@using Ecommerce.ViewModels.BrandViewModels
+@model List<IndexBrandVM>
+
+<h1>Brands</h1>
+
+<a asp-action="Create" value="Create" class="btn btn-primary" >Create</a>
+
+@if(!Model.Any())
+{
+    <div class="alert alert-warning" role="alert">
+        There is no Barnd to show
+    </div>
+}
+
+@foreach (var Department in Model)
+{
+    <div class="card" style="width: 18rem;">
+        <img src="@Department.ImgPath" class="card-img-top" alt="@Department.Name">
+        <div class="card-body">
+            <h5 class="card-title">@Department.Name</h5>
+            <a asp-action="Details" class="w-100 btn btn-primary">Details</a>
+            <a asp-action="Edit" asp-route-id="@Department.Id" class="btn btn-warning">Edit</a>
+            <a asp-action="Delete" class="btn btn-danger js-delete" asp-route-id="@Department.Id" >Delete</a>
+        </div>  
+    </div>
+}

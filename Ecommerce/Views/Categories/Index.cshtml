@@ -1,0 +1,30 @@
+﻿@using Ecommerce.ViewModels.CategoryViewModel
+@model List<IndexCategoryVM>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Categories</h1>
+<a asp-action="Create" class="btn btn-primary">Create</a>
+<hr />
+
+@if(!Model.Any())
+{
+    <div class="alert alert-warning" role="alert">
+        There is no Category to show
+    </div>
+}
+
+@foreach (var Category in Model)
+{
+    <div class="card" style="width: 18rem;">
+        <img src="@Category.ImgPath" class="card-img-top" alt="...">
+        <div class="card-body">
+            <h5 class="card-title">@Category.Name</h5>
+            <p class="card-text">@Category.Description</p>
+            <a asp-action="Details" class="w-100 btn btn-primary">Details</a>
+            <a asp-action="Edit" asp-route-id="@Category.Id" class="btn btn-warning">Edit</a>
+            <a asp-action="Delete" class="btn btn-danger js-delete" asp-route-id="@Category.Id" >Delete</a>
+        </div>  
+    </div>
+}

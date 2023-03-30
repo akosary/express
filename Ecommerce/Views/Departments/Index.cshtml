@@ -1,0 +1,28 @@
+﻿@using Ecommerce.ViewModels.DepartmentViewModels
+@model List<IndexDepartmentVM>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Departments</h1>
+
+@if(!Model.Any())
+{
+    <div class="alert alert-warning" role="alert">
+        There is no department to show
+    </div>
+}
+
+@foreach (var Department in Model)
+{
+    <div class="card" style="width: 18rem;">
+        <img src="@Department.ImgPath" class="card-img-top" alt="...">
+        <div class="card-body">
+            <h5 class="card-title">@Department.Name</h5>
+            <p class="card-text">@Department.Description</p>
+            <a asp-action="Details" class="w-100 btn btn-primary">Details</a>
+            <a asp-action="Edit" asp-route-id="@Department.Id" class="btn btn-warning">Edit</a>
+            <a asp-action="Delete" class="btn btn-danger js-delete" asp-route-id="@Department.Id" >Delete</a>
+        </div>  
+    </div>
+}
