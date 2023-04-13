@@ -12,14 +12,3 @@ The Express project is built using the following technologies:
 - **MVC**: A software architectural pattern used for developing web applications.
 - **MVC Core**: An open-source web application framework developed by Microsoft.
 
-## Installation
-
-Instructions for installing and setting up your project.
-
-## Usage
-
-Instructions for using your project.
-
-## Contributing
-
-Guidelines for contributing to your project.
